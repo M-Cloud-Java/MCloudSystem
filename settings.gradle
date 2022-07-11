@@ -2,4 +2,6 @@ rootProject.name = 'MCloudSystem'
 include 'mcloud-api'
 include 'mcloud-cloud-system'
 include 'mcloud-cloud-system'
+include 'mcloud-api'
+include 'mcloud-runner'
 
