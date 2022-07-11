@@ -1,0 +1,4 @@
+name: McloudServerPlugin
+version: '${version}'
+main: net.mcloud.mcloudserverplugin.McloudServerPlugin
+api-version: 1.18
