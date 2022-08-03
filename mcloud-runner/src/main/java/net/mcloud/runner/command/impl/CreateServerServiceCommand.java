@@ -1,5 +1,6 @@
 package net.mcloud.runner.command.impl;
 
+import net.mcloud.api.MCloudApi;
 import net.mcloud.api.commandsystem.Command;
 import net.mcloud.api.commandsystem.CommandResponse;
 import net.mcloud.api.servicemanager.services.ServerInstance;
@@ -15,7 +16,7 @@ import java.util.Map;
 public class CreateServerServiceCommand extends Command {
     @Override
     public CommandResponse execute(String command_name, ArrayList<String> args) {
-        ServerInstance server = MCloudRunner.getInstance().getServiceManager().createServerService("test", PaperVersions.PAPER_1_18_2);
+        ServerInstance server = MCloudApi.getApi().getServiceManager().createServerService("test", PaperVersions.PAPER_1_18_2, 4096, 4096);
         return CommandResponse.SUCCESS;
     }
 

@@ -26,6 +26,7 @@ public class Downloader {
 
     private final URL url;
     private final String fileName;
+    private boolean isFinished = false;
 
     public Downloader(URL url, String fileName) {
         this.url = url;
@@ -39,9 +40,14 @@ public class Downloader {
             Path path = Path.of(fileName);
             Files.copy(in, path);
             logger.info("Download finished!");
+            isFinished = true;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public boolean isFinished() {
+        return isFinished;
     }
 }

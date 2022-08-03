@@ -1,12 +1,18 @@
 package net.mcloud.api;
 
-import net.mcloud.api.utils.logger.ConsoleColor;
-import net.mcloud.api.utils.logger.Logger;
 import net.mcloud.api.commandsystem.CommandMap;
 import net.mcloud.api.commandsystem.ConsoleCommandHandler;
 import net.mcloud.api.modulesystem.ModuleManager;
+import net.mcloud.api.servicemanager.ServiceManager;
 import net.mcloud.api.utils.CloudManager;
-import net.mcloud.api.utils.json.JsonConfigBuilder;
+import net.mcloud.api.utils.json.JsonHandler;
+import net.mcloud.api.utils.json.MainCloudConfig;
+import net.mcloud.api.utils.logger.ConsoleColor;
+import net.mcloud.api.utils.logger.Logger;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class MCloudApi {
     private static MCloudApi instance;
@@ -14,10 +20,13 @@ public class MCloudApi {
     private final CloudManager cloudManager;
     private final CommandMap cloudCommandMap;
     private final Logger logger;
-    private final JsonConfigBuilder cloudConfigManager;
     private boolean isEnabled;
     private ConsoleCommandHandler cloudCommandHandler;
     private ModuleManager cloudModuleManager;
+
+    private final ServiceManager serviceManager;
+    private JsonHandler jsonHandler;
+    private MainCloudConfig mainCloudConfig;
 
     public MCloudApi() {
         instance = this;
@@ -37,23 +46,45 @@ public class MCloudApi {
         logger.info("Cloud starting... ", ConsoleColor.GREEN);
         isEnabled = true;
 
-        this.cloudConfigManager = new JsonConfigBuilder("cloudsettings", "settings");
-
         logger.info("Loading Settings");
-        setDefaultSettings();
+
+        logger.info("Try to load Config Files...");
+        jsonHandler = new JsonHandler("storage");
+        File dir = new File("storage");
+        if(!dir.exists())
+            dir.mkdirs();
+        File file = new File("storage/mainConfig.json");
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            mainCloudConfig = new MainCloudConfig("54777", "54555", "true");
+            try {
+                jsonHandler.parseObject(mainCloudConfig, "mainConfig.json");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                mainCloudConfig = (MainCloudConfig) jsonHandler.getObject("mainConfig.json", MainCloudConfig.class);
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        logger.info("Try to start ServiceManager...");
+        serviceManager = new ServiceManager("services.json", jsonHandler);
+        logger.info("Finished Loading ServiceManager!");
+
+        logger.info("Finished Loading Config Files!");
 
         this.cloudManager = new CloudManager(instance);
         this.cloudCommandHandler = new ConsoleCommandHandler(new CommandMap());
         this.cloudCommandMap = this.cloudCommandHandler.getCommandMap();
 
         this.cloudModuleManager = new ModuleManager();
-    }
-
-    private void setDefaultSettings() {
-        cloudConfigManager.setInteger("udp-port", 54777, 54777);
-        cloudConfigManager.setInteger("tcp-port", 54555, 54555);
-        cloudConfigManager.setBoolean("deprecated-events", true, true);
-        cloudConfigManager.setInteger("max-cloud-proxy-count", 1, 1);
     }
 
     public void setEnabled(boolean enabled) {
@@ -72,10 +103,6 @@ public class MCloudApi {
         return cloudCommandHandler;
     }
 
-    public JsonConfigBuilder getCloudConfigManager() {
-        return cloudConfigManager;
-    }
-
     public boolean isEnabled() {
         return isEnabled;
     }
@@ -90,5 +117,17 @@ public class MCloudApi {
 
     public static MCloudApi getApi() {
         return instance;
+    }
+
+    public MainCloudConfig getMainCloudConfig() {
+        return mainCloudConfig;
+    }
+
+    public JsonHandler getJsonHandler() {
+        return jsonHandler;
+    }
+
+    public ServiceManager getServiceManager() {
+        return serviceManager;
     }
 }
