@@ -31,7 +31,7 @@ public class ConsoleCompleter implements Completer {
     @Override
     public void complete(LineReader reader, ParsedLine line, List<Candidate> candidates) {
 
-        if (line.line().isBlank()) {
+        if (line.line().isBlank() && line.line().split(" ").length == 1) {
             handler.commandMap().getMap().forEach((s, command) -> {
                 candidates.add(new Candidate(s));
             });

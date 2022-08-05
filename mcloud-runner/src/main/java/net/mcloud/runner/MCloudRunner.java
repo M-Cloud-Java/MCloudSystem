@@ -5,10 +5,7 @@ import net.mcloud.api.eventsystem.HandlerList;
 import net.mcloud.api.eventsystem.defaultevents.server.MCloudStopEvent;
 import net.mcloud.api.modulesystem.MCloudSubModule;
 import net.mcloud.api.utils.logger.ConsoleColor;
-import net.mcloud.runner.commands.CloudStopCommand;
-import net.mcloud.runner.commands.CreateServerServiceCommand;
-import net.mcloud.runner.commands.HelpCommand;
-import net.mcloud.runner.commands.StartServiceCommand;
+import net.mcloud.runner.commands.*;
 import net.mcloud.runner.listeners.CloudStopListener;
 import net.mcloud.runner.listeners.CommandSendListener;
 
@@ -38,10 +35,11 @@ public class MCloudRunner {
     }
 
     private void registerCommands() {
-        mCloudApi.getCloudCommandMap().register(new CloudStopCommand());
+        mCloudApi.getCloudCommandMap().register(new CloudExitCommand());
         mCloudApi.getCloudCommandMap().register(new HelpCommand());
         mCloudApi.getCloudCommandMap().register(new CreateServerServiceCommand());
         mCloudApi.getCloudCommandMap().register(new StartServiceCommand());
+        mCloudApi.getCloudCommandMap().register(new CloudClearCommand());
     }
 
     private void registerListener() {

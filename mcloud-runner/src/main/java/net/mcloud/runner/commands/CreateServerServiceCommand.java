@@ -30,12 +30,7 @@ public class CreateServerServiceCommand extends Command {
     }
 
     @Override
-    public Map<String, List<AttributedString>> widgetOpt() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public List<AttributedString> desc() {
-        return List.of(new AttributedString("Creates a Server Service LUL"));
+    public ArrayList<String> args(String[] args) {
+        return new ArrayList<>();
     }
 }

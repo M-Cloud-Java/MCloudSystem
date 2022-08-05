@@ -5,7 +5,7 @@ import net.mcloud.api.commandsystem.CommandResponse;
 
 import java.util.ArrayList;
 
-public class CloudStopCommand extends Command {
+public class CloudExitCommand extends Command {
 
     @Override
     public String usage() {
@@ -14,7 +14,7 @@ public class CloudStopCommand extends Command {
 
     @Override
     public String name() {
-        return "stop";
+        return "exit";
     }
 
     @Override

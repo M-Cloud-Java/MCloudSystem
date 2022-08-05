@@ -19,6 +19,7 @@ dependencies {
     implementation 'kryonet:kryonet:2.21-2'
     implementation 'org.jline:jline:3.21.0'
     implementation 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor("org.projectlombok:lombok:1.18.24")
     implementation 'org.mongodb:mongodb-driver-async:3.0.4'
     implementation 'com.google.code.gson:gson:2.9.1'
 }

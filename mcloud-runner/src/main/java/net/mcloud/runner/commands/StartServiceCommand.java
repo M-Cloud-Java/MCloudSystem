@@ -52,12 +52,7 @@ public class StartServiceCommand extends Command {
     }
 
     @Override
-    public Map<String, List<AttributedString>> widgetOpt() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public List<AttributedString> desc() {
+    public ArrayList<String> args(String[] args) {
         return new ArrayList<>();
     }
 }

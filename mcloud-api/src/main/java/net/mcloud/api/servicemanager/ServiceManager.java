@@ -42,8 +42,7 @@ public class ServiceManager {
                 throw new RuntimeException(e);
             }
             serverStorage.servers().forEach(server -> {
-                ServerInstance serverInstance = new ServerInstance(server.serverName(), Enum.valueOf(PaperVersions.class, server.version().toUpperCase()),
-                        server.minMemory(), server.maxMemory());
+                ServerInstance serverInstance = new ServerInstance(server.serverName(), Enum.valueOf(PaperVersions.class, server.version().toUpperCase()));
                 serverInstances.add(serverInstance);
             });
         }
@@ -64,7 +63,9 @@ public class ServiceManager {
     }
 
     public ServerInstance createServerService(String serverName, PaperVersions serverVersion, int minMemory, int maxMemory) {
-        ServerInstance serverInstance = new ServerInstance(serverName, serverVersion, minMemory, maxMemory);
+        ServerInstance serverInstance = new ServerInstance(serverName, serverVersion);
+        serverInstance.setMaxMemory(maxMemory);
+        serverInstance.setMinMemory(minMemory);
         serverInstance.createServer();
         serverInstances.add(serverInstance);
         return serverInstance;
