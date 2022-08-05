@@ -1,6 +1,6 @@
 package net.mcloud.api.eventsystem;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.utils.exceptions.EventException;
 
 public class RegisteredListener {
@@ -9,13 +9,13 @@ public class RegisteredListener {
 
     private final EventPriority eventPriority;
 
-    private final MCloudApi api;
+    private final MCloudAPI api;
 
     private final EventExecutor eventExecutor;
 
     private  final boolean ignoreCancelled;
 
-    public RegisteredListener(Listener listener, EventExecutor eventExecutor, EventPriority eventPriority, MCloudApi api, boolean ignoreCancelled) {
+    public RegisteredListener(Listener listener, EventExecutor eventExecutor, EventPriority eventPriority, MCloudAPI api, boolean ignoreCancelled) {
         this.listener = listener;
         this.eventPriority = eventPriority;
         this.eventExecutor = eventExecutor;
@@ -36,7 +36,7 @@ public class RegisteredListener {
         return listener;
     }
 
-    public MCloudApi getMCloud() {
+    public MCloudAPI getMCloud() {
         return api;
     }
 

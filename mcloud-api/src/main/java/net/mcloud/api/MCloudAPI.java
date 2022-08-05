@@ -14,8 +14,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-public class MCloudApi {
-    private static MCloudApi instance;
+public class MCloudAPI {
+    private static MCloudAPI instance;
 
     private final CloudManager cloudManager;
     private final CommandMap cloudCommandMap;
@@ -28,7 +28,7 @@ public class MCloudApi {
     private JsonHandler jsonHandler;
     private MainCloudConfig mainCloudConfig;
 
-    public MCloudApi() {
+    public MCloudAPI() {
         instance = this;
         this.logger = new Logger();
 
@@ -115,7 +115,7 @@ public class MCloudApi {
         return cloudModuleManager;
     }
 
-    public static MCloudApi getApi() {
+    public static MCloudAPI getApi() {
         return instance;
     }
 

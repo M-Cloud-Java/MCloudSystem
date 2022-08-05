@@ -10,7 +10,7 @@
 
 package net.mcloud.api.commandsystem.reader;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.commandsystem.Command;
 import net.mcloud.api.commandsystem.CommandMap;
 import net.mcloud.api.commandsystem.CommandResponse;
@@ -51,18 +51,18 @@ public class ConsoleThread extends Thread {
                 }
                 ConsoleCommandSendEvent event = new ConsoleCommandSendEvent(command_name, args);
                 if (!event.isCancelled()) {
-                    MCloudApi.getApi().getCloudManager().callEvent(event);
+                    MCloudAPI.getApi().getCloudManager().callEvent(event);
                     if (this.map == null) {
-                        MCloudApi.getApi().getLogger().error("CommandMap is null");
+                        MCloudAPI.getApi().getLogger().error("CommandMap is null");
                         args.clear();
                     } else {
                         Command command = this.map.getMap().get(command_name);
                         if (command == null) {
-                            MCloudApi.getApi().getLogger().error("Dieser Command wurde nicht gefunden!");
+                            MCloudAPI.getApi().getLogger().error("Dieser Command wurde nicht gefunden!");
                             args.clear();
                         } else {
                             CommandResponse execute = command.execute(command_name, args);
-                            MCloudApi.getApi().getLogger().info("Command " + execute.name());
+                            MCloudAPI.getApi().getLogger().info("Command " + execute.name());
                             args.clear();
                         }
                     }

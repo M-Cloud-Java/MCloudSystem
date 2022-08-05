@@ -10,7 +10,6 @@
 
 package net.mcloud.api.commandsystem.completer;
 
-import net.mcloud.api.MCloudApi;
 import net.mcloud.api.commandsystem.Command;
 import net.mcloud.api.commandsystem.reader.ConsoleCommandReader;
 import org.jline.reader.Candidate;

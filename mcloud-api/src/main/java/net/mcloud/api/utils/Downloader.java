@@ -11,7 +11,7 @@
 package net.mcloud.api.utils;
 
 import lombok.Getter;
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.utils.logger.ConsoleColor;
 import net.mcloud.api.utils.logger.Logger;
 
@@ -34,7 +34,7 @@ public class Downloader {
     }
 
     public void downloadFile() {
-        Logger logger = MCloudApi.getApi().getLogger();
+        Logger logger = MCloudAPI.getApi().getLogger();
         logger.info("Starting downloading file " + fileName, ConsoleColor.YELLOW);
         try (InputStream in = url.openStream()) {
             Path path = Path.of(fileName);
@@ -45,9 +45,5 @@ public class Downloader {
             throw new RuntimeException(e);
         }
 
-    }
-
-    public boolean isFinished() {
-        return isFinished;
     }
 }

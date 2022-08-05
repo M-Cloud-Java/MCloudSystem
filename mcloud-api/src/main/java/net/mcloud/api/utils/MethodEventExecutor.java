@@ -8,13 +8,7 @@ import net.mcloud.api.utils.exceptions.EventException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class MethodEventExecutor implements EventExecutor {
-
-    private final Method method;
-
-    public MethodEventExecutor(Method method) {
-        this.method = method;
-    }
+public record MethodEventExecutor(Method method) implements EventExecutor {
 
     @Override
     public void execute(Listener listener, Event event) throws EventException {
@@ -28,14 +22,10 @@ public class MethodEventExecutor implements EventExecutor {
             }
         } catch (InvocationTargetException ex) {
             throw new EventException(ex.getCause());
-        } catch (ClassCastException ex) {
+        } catch (ClassCastException ignored) {
 
         } catch (Throwable t) {
             throw new EventException(t);
         }
-    }
-
-    public Method getMethod() {
-        return method;
     }
 }

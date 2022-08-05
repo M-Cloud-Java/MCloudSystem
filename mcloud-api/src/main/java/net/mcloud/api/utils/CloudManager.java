@@ -1,6 +1,6 @@
 package net.mcloud.api.utils;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.eventsystem.*;
 import net.mcloud.api.utils.exceptions.CloudException;
 
@@ -9,9 +9,9 @@ import java.util.*;
 
 public class CloudManager {
 
-    private MCloudApi api;
+    private final MCloudAPI api;
 
-    public CloudManager(MCloudApi api) {
+    public CloudManager(MCloudAPI api) {
         this.api = api;
     }
 
@@ -33,7 +33,7 @@ public class CloudManager {
         }
     }
 
-    public void registerEvents(Listener listener, MCloudApi api) {
+    public void registerEvents(Listener listener, MCloudAPI api) {
         if (!api.isEnabled()) {
             throw new CloudException("The Cloud is not able to register this Listener " + listener.getClass().getName() + " while Cloud is null");
         }
@@ -47,7 +47,7 @@ public class CloudManager {
             Collections.addAll(methods, publicMethods);
             Collections.addAll(methods, privateMethods);
         } catch (NoClassDefFoundError e) {
-            MCloudApi.getApi().getLogger().error("The MCloud is failed to register this Event");
+            MCloudAPI.getApi().getLogger().error("The MCloud is failed to register this Event");
             return;
         }
 
@@ -60,7 +60,7 @@ public class CloudManager {
             final Class<?> checkClass;
 
             if (method.getParameterTypes().length != 1 || !Event.class.isAssignableFrom(checkClass = method.getParameterTypes()[0])) {
-                MCloudApi.getApi().getLogger().error("attempted to register an invalid EventHandler method signature \"" + method.toGenericString() + "\" in " + listener.getClass());
+                MCloudAPI.getApi().getLogger().error("attempted to register an invalid EventHandler method signature \"" + method.toGenericString() + "\" in " + listener.getClass());
                 continue;
             }
 
@@ -71,7 +71,7 @@ public class CloudManager {
                 // This loop checks for extending deprecated events
                 if (clazz.getAnnotation(Deprecated.class) != null) {
                     if (Boolean.parseBoolean(api.getMainCloudConfig().deprecatedEvents())) {
-                        MCloudApi.getApi().getLogger().warn("MCloud.cloud.deprecatedEvent " + clazz.getName());
+                        MCloudAPI.getApi().getLogger().warn("MCloud.cloud.deprecatedEvent " + clazz.getName());
                     }
                     break;
                 }
@@ -80,11 +80,11 @@ public class CloudManager {
         }
     }
 
-    public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority eventPriority, EventExecutor eventExecutor, MCloudApi api) throws CloudException {
+    public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority eventPriority, EventExecutor eventExecutor, MCloudAPI api) throws CloudException {
         this.registerEvent(event, listener, eventPriority, eventExecutor, api, false);
     }
 
-    public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority eventPriority, EventExecutor eventExecutor, MCloudApi api, boolean ignoreCancelled) throws CloudException {
+    public void registerEvent(Class<? extends Event> event, Listener listener, EventPriority eventPriority, EventExecutor eventExecutor, MCloudAPI api, boolean ignoreCancelled) throws CloudException {
         if (!api.isEnabled()) {
             throw new CloudException("The MCloud attempted to register " + event + " while MCloud not Online");
         }
@@ -92,7 +92,7 @@ public class CloudManager {
         try {
             this.getEventListeners(event).register(new RegisteredListener(listener, eventExecutor, eventPriority, api, ignoreCancelled));
         } catch (IllegalAccessException e) {
-            MCloudApi.getApi().getLogger().error(e.getMessage());
+            MCloudAPI.getApi().getLogger().error(e.getMessage());
         }
     }
 

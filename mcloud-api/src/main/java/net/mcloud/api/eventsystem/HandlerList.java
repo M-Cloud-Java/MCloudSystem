@@ -1,6 +1,6 @@
 package net.mcloud.api.eventsystem;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class HandlerList {
         }
     }
 
-    public static void unregisterAll(MCloudApi api) {
+    public static void unregisterAll(MCloudAPI api) {
         synchronized (allLists) {
             for (HandlerList h : allLists) {
                 h.unregister(api);
@@ -77,7 +77,7 @@ public class HandlerList {
         }
     }
 
-    public synchronized void unregister(MCloudApi api) {
+    public synchronized void unregister(MCloudAPI api) {
         boolean changed = false;
         for (List<RegisteredListener> list : handlerSlots.values()) {
             for (ListIterator<RegisteredListener> i = list.listIterator(); i.hasNext(); ) {
@@ -120,7 +120,7 @@ public class HandlerList {
         return handlers;
     }
 
-    public static ArrayList<RegisteredListener> getRegisteredListeners(MCloudApi api) {
+    public static ArrayList<RegisteredListener> getRegisteredListeners(MCloudAPI api) {
         ArrayList<RegisteredListener> listeners = new ArrayList<>();
         synchronized (allLists) {
             for (HandlerList h : allLists) {

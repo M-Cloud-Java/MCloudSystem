@@ -8,7 +8,7 @@
 */
 
 
-package net.mcloud.runner.command.impl;
+package net.mcloud.runner.commands;
 
 import net.mcloud.api.commandsystem.Command;
 import net.mcloud.api.commandsystem.CommandResponse;

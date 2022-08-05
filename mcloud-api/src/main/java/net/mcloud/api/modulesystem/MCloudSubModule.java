@@ -11,13 +11,13 @@
 package net.mcloud.api.modulesystem;
 
 import lombok.Getter;
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.utils.logger.Logger;
 
 public abstract class MCloudSubModule {
 
     public MCloudSubModule() {
-        MCloudApi.getApi().getCloudModuleManager().registerModule(this);
+        MCloudAPI.getApi().getCloudModuleManager().registerModule(this);
     }
 
     public abstract String getModuleName();

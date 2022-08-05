@@ -1,6 +1,6 @@
 package net.mcloud.api.commandsystem;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.utils.logger.Logger;
 
 import java.util.ArrayList;
@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public abstract class Command {
 
     public Logger logger() {
-        return MCloudApi.getApi().getLogger();
+        return MCloudAPI.getApi().getLogger();
     }
 
     public abstract CommandResponse execute(String commandName, ArrayList<String> args);

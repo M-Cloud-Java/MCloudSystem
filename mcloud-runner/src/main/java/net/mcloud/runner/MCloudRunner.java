@@ -1,24 +1,24 @@
 package net.mcloud.runner;
 
-import net.mcloud.api.MCloudApi;
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.eventsystem.HandlerList;
 import net.mcloud.api.eventsystem.defaultevents.server.MCloudStopEvent;
 import net.mcloud.api.modulesystem.MCloudSubModule;
 import net.mcloud.api.utils.logger.ConsoleColor;
-import net.mcloud.runner.command.impl.CloudStopCommand;
-import net.mcloud.runner.command.impl.CreateServerServiceCommand;
-import net.mcloud.runner.command.impl.HelpCommand;
-import net.mcloud.runner.command.impl.StartServiceCommand;
-import net.mcloud.runner.listener.impl.CloudStopListener;
-import net.mcloud.runner.listener.impl.CommandSendListener;
+import net.mcloud.runner.commands.CloudStopCommand;
+import net.mcloud.runner.commands.CreateServerServiceCommand;
+import net.mcloud.runner.commands.HelpCommand;
+import net.mcloud.runner.commands.StartServiceCommand;
+import net.mcloud.runner.listeners.CloudStopListener;
+import net.mcloud.runner.listeners.CommandSendListener;
 
 public class MCloudRunner {
     private static MCloudRunner instance;
-    private final MCloudApi mCloudApi;
+    private final MCloudAPI mCloudApi;
     public MCloudRunner() {
         instance = this;
         Runtime.getRuntime().addShutdownHook(new ShutdownTask());
-        mCloudApi = new MCloudApi();
+        mCloudApi = new MCloudAPI();
 
         mCloudApi.getLogger().info("Loading Modules");
         mCloudApi.getCloudModuleManager().getModules().forEach(MCloudSubModule::onLoad);
@@ -49,7 +49,7 @@ public class MCloudRunner {
         mCloudApi.getCloudManager().registerEvents(new CommandSendListener(), mCloudApi);
     }
 
-    public MCloudApi getMCloudApi() {
+    public MCloudAPI getMCloudApi() {
         return mCloudApi;
     }
 
