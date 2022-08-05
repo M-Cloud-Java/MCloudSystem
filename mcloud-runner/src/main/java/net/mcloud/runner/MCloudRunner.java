@@ -21,8 +21,6 @@ public class MCloudRunner {
         Runtime.getRuntime().addShutdownHook(new ShutdownTask());
         mCloudApi = new MCloudApi();
 
-
-
         mCloudApi.getLogger().info("Loading Modules");
         mCloudApi.getCloudModuleManager().getModules().forEach(MCloudSubModule::onLoad);
         mCloudApi.getLogger().info("Starting Modules");

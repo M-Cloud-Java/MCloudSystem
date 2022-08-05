@@ -5,23 +5,26 @@ import net.mcloud.api.commandsystem.CommandResponse;
 import net.mcloud.api.servicemanager.services.ServerInstance;
 import net.mcloud.api.servicemanager.versions.PaperVersions;
 import net.mcloud.runner.MCloudRunner;
-import org.jline.utils.AttributedString;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class CreateServerServiceCommand extends Command {
     @Override
-    public CommandResponse execute(String command_name, ArrayList<String> args) {
+    public CommandResponse execute(String commandName, ArrayList<String> args) {
+
+        if (args.size() != 1) {
+            this.logger().warn("You have to set a name before you can create a new service!");
+            this.logger().warn("create-server-service <name>");
+            return CommandResponse.ERROR;
+        }
+
         ServerInstance server = MCloudRunner.getInstance().getServiceManager().createServerService("test", PaperVersions.PAPER_1_18_2);
         return CommandResponse.SUCCESS;
     }
 
     @Override
     public String usage() {
-        return "This Command is useful :)";
+        return "Creates a Server Service for Testing stuff";
     }
 
     @Override
@@ -30,12 +33,14 @@ public class CreateServerServiceCommand extends Command {
     }
 
     @Override
-    public Map<String, List<AttributedString>> widgetOpt() {
-        return new HashMap<>();
-    }
+    public ArrayList<String> args(String[] args) {
 
-    @Override
-    public List<AttributedString> desc() {
-        return List.of(new AttributedString("Creates a Server Service LUL"));
+        var list = new ArrayList<String>();
+
+        if (args.length == 1) {
+            list.add("[name]");
+        }
+
+        return list;
     }
 }

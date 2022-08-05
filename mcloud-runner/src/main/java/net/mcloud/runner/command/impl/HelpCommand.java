@@ -46,12 +46,7 @@ public class HelpCommand extends Command {
     }
 
     @Override
-    public Map<String, List<AttributedString>> widgetOpt() {
-        return new HashMap<>();
-    }
-
-    @Override
-    public List<AttributedString> desc() {
-        return List.of(new AttributedString("Get help about the commands"));
+    public ArrayList<String> args(String[] args) {
+        return null;
     }
 }

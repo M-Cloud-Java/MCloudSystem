@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class CommandMap {
 
-    private Map<String, Command> COMMAND_MAP;
+    private final Map<String, Command> COMMAND_MAP;
 
     public CommandMap() {
         COMMAND_MAP = new HashMap<>();
     }
 
-    public void register(Command command_clazz) {
-        COMMAND_MAP.put(command_clazz.name(), command_clazz);
+    public void register(Command command) {
+        COMMAND_MAP.put(command.name(), command);
     }
 
     public void unregister(String command) {

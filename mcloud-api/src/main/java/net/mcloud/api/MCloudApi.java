@@ -3,7 +3,7 @@ package net.mcloud.api;
 import net.mcloud.api.utils.logger.ConsoleColor;
 import net.mcloud.api.utils.logger.Logger;
 import net.mcloud.api.commandsystem.CommandMap;
-import net.mcloud.api.commandsystem.ConsoleCommandHandler;
+import net.mcloud.api.commandsystem.reader.ConsoleCommandReader;
 import net.mcloud.api.modulesystem.ModuleManager;
 import net.mcloud.api.utils.CloudManager;
 import net.mcloud.api.utils.json.JsonConfigBuilder;
@@ -16,8 +16,8 @@ public class MCloudApi {
     private final Logger logger;
     private final JsonConfigBuilder cloudConfigManager;
     private boolean isEnabled;
-    private ConsoleCommandHandler cloudCommandHandler;
-    private ModuleManager cloudModuleManager;
+    private final ConsoleCommandReader cloudCommandHandler;
+    private final ModuleManager cloudModuleManager;
 
     public MCloudApi() {
         instance = this;
@@ -43,8 +43,8 @@ public class MCloudApi {
         setDefaultSettings();
 
         this.cloudManager = new CloudManager(instance);
-        this.cloudCommandHandler = new ConsoleCommandHandler(new CommandMap());
-        this.cloudCommandMap = this.cloudCommandHandler.getCommandMap();
+        this.cloudCommandHandler = new ConsoleCommandReader(new CommandMap());
+        this.cloudCommandMap = this.cloudCommandHandler.commandMap();
 
         this.cloudModuleManager = new ModuleManager();
     }
@@ -68,7 +68,7 @@ public class MCloudApi {
         return cloudCommandMap;
     }
 
-    public ConsoleCommandHandler getCloudCommandHandler() {
+    public ConsoleCommandReader getCloudCommandHandler() {
         return cloudCommandHandler;
     }
 
