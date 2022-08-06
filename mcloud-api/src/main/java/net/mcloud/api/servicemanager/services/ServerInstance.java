@@ -23,7 +23,7 @@ public class ServerInstance extends Instance {
 
     @Override
     public boolean createServer() {
-        serverFolder = new File("services/" + "serverName");
+        serverFolder = new File("services/" + getServerName());
         String minMemoryString = "-Xms" + getMinMemory() + "M";
         String maxMemoryString = "-Xmx" + getMaxMemory() + "M";
         if (!serverFolder.exists())

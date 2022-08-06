@@ -20,7 +20,7 @@ public class ServiceManager {
     private List<ProxyInstance> proxyInstances;
     private List<LobbyInstance> lobbyInstances;
 
-    public ServiceManager(String fileName, JsonHandler jsonHandler) {
+    public ServiceManager() {
         File file = new File(jsonHandler.getStoragePath() + "/" + fileName);
         if(!file.exists()) {
             try {
@@ -45,20 +45,6 @@ public class ServiceManager {
                 ServerInstance serverInstance = new ServerInstance(server.serverName(), Enum.valueOf(PaperVersions.class, server.version().toUpperCase()));
                 serverInstances.add(serverInstance);
             });
-        }
-    }
-
-    public void saveServices(String fileName, JsonHandler jsonHandler) {
-        List<Server> servers = new ArrayList<>();
-        serverInstances.forEach(serverInstance -> {
-            Server server = new Server(serverInstance.getServerName(), serverInstance.getPaperVersion().name(), serverInstance.getMinMemory(), serverInstance.getMaxMemory());
-            servers.add(server);
-        });
-        ServerStorage serverStorage = new ServerStorage(servers);
-        try {
-            jsonHandler.parseObject(serverStorage, fileName);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

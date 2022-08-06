@@ -5,13 +5,10 @@ import net.mcloud.api.commandsystem.reader.ConsoleCommandReader;
 import net.mcloud.api.modulesystem.ModuleManager;
 import net.mcloud.api.servicemanager.ServiceManager;
 import net.mcloud.api.utils.CloudManager;
-import net.mcloud.api.utils.json.JsonHandler;
-import net.mcloud.api.utils.json.MainCloudConfig;
 import net.mcloud.api.utils.logger.ConsoleColor;
 import net.mcloud.api.utils.logger.Logger;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class MCloudAPI {
@@ -25,8 +22,8 @@ public class MCloudAPI {
     private final ModuleManager cloudModuleManager;
 
     private final ServiceManager serviceManager;
-    private JsonHandler jsonHandler;
-    private MainCloudConfig mainCloudConfig;
+
+    private J
 
     public MCloudAPI() {
         instance = this;
@@ -49,7 +46,6 @@ public class MCloudAPI {
         logger.info("Loading Settings");
 
         logger.info("Try to load Config Files...");
-        jsonHandler = new JsonHandler("storage");
         File dir = new File("storage");
         if(!dir.exists())
             dir.mkdirs();
@@ -60,22 +56,11 @@ public class MCloudAPI {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            mainCloudConfig = new MainCloudConfig("54777", "54555", "true");
-            try {
-                jsonHandler.parseObject(mainCloudConfig, "mainConfig.json");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         } else {
-            try {
-                mainCloudConfig = (MainCloudConfig) jsonHandler.getObject("mainConfig.json", MainCloudConfig.class);
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
         }
 
         logger.info("Try to start ServiceManager...");
-        serviceManager = new ServiceManager("services.json", jsonHandler);
+        serviceManager = new ServiceManager();
         logger.info("Finished Loading ServiceManager!");
 
         logger.info("Finished Loading Config Files!");
@@ -117,14 +102,6 @@ public class MCloudAPI {
 
     public static MCloudAPI getApi() {
         return instance;
-    }
-
-    public MainCloudConfig getMainCloudConfig() {
-        return mainCloudConfig;
-    }
-
-    public JsonHandler getJsonHandler() {
-        return jsonHandler;
     }
 
     public ServiceManager getServiceManager() {
