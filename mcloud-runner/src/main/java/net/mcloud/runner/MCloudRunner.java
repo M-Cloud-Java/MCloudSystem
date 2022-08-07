@@ -67,7 +67,7 @@ public class MCloudRunner {
             MCloudStopEvent event = new MCloudStopEvent("The System Shutdown Normal");
             mCloudApi.getCloudManager().callEvent(event);
             mCloudApi.getLogger().info("Save Service Config ...");
-            mCloudApi.getServiceManager().saveServices("services.json", mCloudApi.getJsonHandler());
+
             mCloudApi.getLogger().info("Stopping Modules ...");
             mCloudApi.getCloudModuleManager().getModules().forEach(MCloudSubModule::onStop);
             mCloudApi.getLogger().warn("Stopped Modules!");

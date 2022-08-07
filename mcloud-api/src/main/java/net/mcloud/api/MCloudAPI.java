@@ -5,11 +5,13 @@ import net.mcloud.api.commandsystem.reader.ConsoleCommandReader;
 import net.mcloud.api.modulesystem.ModuleManager;
 import net.mcloud.api.servicemanager.ServiceManager;
 import net.mcloud.api.utils.CloudManager;
+import net.mcloud.api.utils.config.ConfigType;
+import net.mcloud.api.utils.config.types.CloudConfig;
+import net.mcloud.api.utils.config.XmlConfigFile;
 import net.mcloud.api.utils.logger.ConsoleColor;
 import net.mcloud.api.utils.logger.Logger;
 
 import java.io.File;
-import java.io.IOException;
 
 public class MCloudAPI {
     private static MCloudAPI instance;
@@ -23,7 +25,9 @@ public class MCloudAPI {
 
     private final ServiceManager serviceManager;
 
-    private J
+    private XmlConfigFile mainConfig;
+
+    private CloudConfig cloudConfig;
 
     public MCloudAPI() {
         instance = this;
@@ -45,19 +49,19 @@ public class MCloudAPI {
 
         logger.info("Loading Settings");
 
-        logger.info("Try to load Config Files...");
+        logger.info("Try to load Config Files...", ConsoleColor.YELLOW);
         File dir = new File("storage");
         if(!dir.exists())
             dir.mkdirs();
-        File file = new File("storage/mainConfig.json");
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
+        mainConfig = new XmlConfigFile(dir.getPath(), "cloudConfig.xml");
+        if(!mainConfig.exists()) {
+            logger.info("Cloud Config is not founded, the Cloud Create a new Cloud Config", ConsoleColor.YELLOW);
+            cloudConfig = (CloudConfig) mainConfig.createFile(new CloudConfig(54555, 54777, true));
+            logger.info("The Cloud Config is successful created", ConsoleColor.YELLOW);
         }
+        logger.info("Cloud Config is founded, the Cloud try to Load the Cloud Config", ConsoleColor.YELLOW);
+        cloudConfig = (CloudConfig) mainConfig.loadFile(ConfigType.CLOUD_CONFIG);
+        logger.info("Cloud Config is successful loaded", ConsoleColor.YELLOW);
 
         logger.info("Try to start ServiceManager...");
         serviceManager = new ServiceManager();
@@ -106,5 +110,9 @@ public class MCloudAPI {
 
     public ServiceManager getServiceManager() {
         return serviceManager;
+    }
+
+    public CloudConfig getCloudConfig() {
+        return cloudConfig;
     }
 }

@@ -1,5 +1,7 @@
 package net.mcloud.api.utils.config;
 
+import net.mcloud.api.utils.config.types.CloudConfig;
+import net.mcloud.api.utils.config.types.Server;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -95,7 +97,63 @@ public class XmlConfigFile {
         return null;
     }
 
-    public Record createServerFile(Record record) {
+    public void updateFile(Record record) {
+        if(record instanceof CloudConfig cloudConfig) {
+            try {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse(file);
+                document.getDocumentElement().normalize();
+
+                if (!document.getDocumentElement().getNodeName().equals("mcloud"))
+                    return;
+
+                NodeList list = document.getElementsByTagName("server");
+                Node node = list.item(0);
+
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+
+                    element.getElementsByTagName("tcpPort").item(0).setTextContent(String.valueOf(cloudConfig.tcpPort()));
+                    element.getElementsByTagName("udpPort").item(0).setTextContent(String.valueOf(cloudConfig.udpPort()));
+                    element.getElementsByTagName("deprecatedEvents").item(0).setTextContent(String.valueOf(cloudConfig.deprecatedEvents()));
+                }
+
+            } catch (ParserConfigurationException | IOException | SAXException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        if(record instanceof Server server) {
+                try {
+                    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                    documentBuilderFactory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+                    DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                    Document document = documentBuilder.parse(file);
+                    document.getDocumentElement().normalize();
+
+                    if(!document.getDocumentElement().getNodeName().equals("mcloud"))
+                        return;
+
+                    NodeList list = document.getElementsByTagName("server");
+                    Node node = list.item(0);
+
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
+                        Element element = (Element) node;
+
+                        element.getElementsByTagName("name").item(0).setTextContent(server.serverName());
+                        element.getElementsByTagName("version").item(0).setTextContent(server.serverVersion().toUpperCase());
+                        element.getElementsByTagName("minMemory").item(0).setTextContent(String.valueOf(server.minMemory()));
+                        element.getElementsByTagName("maxMemory").item(0).setTextContent(String.valueOf(server.maxMemory()));
+                    }
+
+                } catch (ParserConfigurationException | IOException | SAXException e) {
+                    throw new RuntimeException(e);
+                }
+        }
+    }
+
+    public Record createFile(Record record) {
 
         if(record instanceof Server server) {
             try {

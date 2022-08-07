@@ -70,7 +70,7 @@ public class CloudManager {
             for (Class<?> clazz = eventClass; Event.class.isAssignableFrom(clazz); clazz = clazz.getSuperclass()) {
                 // This loop checks for extending deprecated events
                 if (clazz.getAnnotation(Deprecated.class) != null) {
-                    if (Boolean.parseBoolean(api.getMainCloudConfig().deprecatedEvents())) {
+                    if (api.getCloudConfig().deprecatedEvents()) {
                         MCloudAPI.getApi().getLogger().warn("MCloud.cloud.deprecatedEvent " + clazz.getName());
                     }
                     break;
