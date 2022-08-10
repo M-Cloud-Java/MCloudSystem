@@ -46,6 +46,9 @@ public abstract class Instance {
 
     protected OS getOS() {
         String property = System.getProperty("os.name");
+        if(property.contains("Windows")) {
+            return OS.WINDOWS;
+        }
         return OS.valueOf(property.toUpperCase(Locale.ROOT));
     }
 

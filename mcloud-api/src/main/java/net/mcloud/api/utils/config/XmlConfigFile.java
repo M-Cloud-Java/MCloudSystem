@@ -1,7 +1,9 @@
 package net.mcloud.api.utils.config;
 
+import net.mcloud.api.MCloudAPI;
 import net.mcloud.api.utils.config.types.CloudConfig;
 import net.mcloud.api.utils.config.types.Server;
+import net.mcloud.api.utils.logger.ConsoleColor;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -76,7 +78,8 @@ public class XmlConfigFile {
                     if(!document.getDocumentElement().getNodeName().equals("mcloud"))
                         return null;
 
-                    NodeList list = document.getElementsByTagName("server");
+                    NodeList list = document.getElementsByTagName("config");
+                    MCloudAPI.getApi().getLogger().info("[DEBUG] NodeList length: " + list.item(0).getNodeName(), ConsoleColor.BLUE);
                     Node node = list.item(0);
 
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
