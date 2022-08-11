@@ -38,7 +38,7 @@ public class ConsoleThread extends Thread {
         String line;
         try {
 
-            while (true) {
+            while (MCloudAPI.getApi().isEnabled()) {
                 line = reader.readLine(ConsoleColor.RESET.getColor() + "Cloud > ").toLowerCase(Locale.ROOT);
 
                 String[] command_line = line.split(" ");
@@ -49,21 +49,23 @@ public class ConsoleThread extends Thread {
                         args.add(s);
                     }
                 }
-                ConsoleCommandSendEvent event = new ConsoleCommandSendEvent(command_name, args);
-                if (!event.isCancelled()) {
-                    MCloudAPI.getApi().getCloudManager().callEvent(event);
-                    if (this.map == null) {
-                        MCloudAPI.getApi().getLogger().error("CommandMap is null");
-                        args.clear();
-                    } else {
-                        Command command = this.map.getMap().get(command_name);
-                        if (command == null) {
-                            MCloudAPI.getApi().getLogger().error("Dieser Command wurde nicht gefunden!");
+                if (!line.isEmpty() || !line.isBlank()) {
+                    ConsoleCommandSendEvent event = new ConsoleCommandSendEvent(command_name, args);
+                    if (!event.isCancelled()) {
+                        MCloudAPI.getApi().getCloudManager().callEvent(event);
+                        if (this.map == null) {
+                            MCloudAPI.getApi().getLogger().error("CommandMap is null");
                             args.clear();
                         } else {
-                            CommandResponse execute = command.execute(command_name, args);
-                            MCloudAPI.getApi().getLogger().info("Command " + execute.name());
-                            args.clear();
+                            Command command = this.map.getMap().get(command_name);
+                            if (command == null) {
+                                MCloudAPI.getApi().getLogger().error("Dieser Command wurde nicht gefunden!");
+                                args.clear();
+                            } else {
+                                CommandResponse execute = command.execute(command_name, args);
+                                MCloudAPI.getApi().getLogger().info("Command " + execute.name());
+                                args.clear();
+                            }
                         }
                     }
                 }
